@@ -22,10 +22,10 @@ class Solution:
 # bitshift
 class Solution:
     def toHex(self, num: int) -> str:
-        ans = self.bitshift(num,5)
+        ans = self.bitshift(num,4)
         return ans[2:]
     def bitshift(self, n:int, nbit: int) -> int:
-        hex_n = (n + (1 << 2**nbit)) % (1 << 2**nbit)
+        hex_n = (n + (1 << 2**(nbit+1))) % (1 << 2**(nbit+1))
         return hex(hex_n)
 
 # 풀이2
