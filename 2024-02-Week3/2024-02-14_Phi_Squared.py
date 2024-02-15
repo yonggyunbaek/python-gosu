@@ -6,37 +6,48 @@
 # N 마리 일 때 마지막 남는 미생물 최종 크기와 초기 위치를 찾는 프로그램
 
 import sys
-cnt = 0
-def find_last_micro(idx_micro):
+
+def find_last_micro(visited, idx_micro):
     # print("len", len(idx_micro))
+    
     if len(idx_micro) == 1:
         return idx_micro
     
     for i in range(len(idx_micro)):
-        
-        if len(idx_micro) < i+1:
-            find_last_micro(idx_micro)
+        print(idx_micro)
+        print(visited)
+        print("i=", i)
         if len(idx_micro) == 1:
+            # return idx_micro
             break
-        # print(i, idx_micro[i], idx_micro[i+1])
-        try:
-            if idx_micro[i][1] >= idx_micro[i+1][1]:
-                idx_micro[i][1] += idx_micro[i+1][1]
-                idx_micro.pop(i+1)
-            else:
-                idx_micro[i+1][1] += idx_micro[i][1]
-                idx_micro.pop(i)
-        except:
-            if idx_micro[i][1] >= idx_micro[i-1][1]:
+        
+        elif visited[i] == False:
+            if i-1 >= 0 and idx_micro[i][1] >= idx_micro[i-1][1]:
                 idx_micro[i][1] += idx_micro[i-1][1]
                 idx_micro.pop(i-1)
+                visited.pop(i-1)
+                print("이전 흡수")
+                visited[i-1] = True
+                find_last_micro(visited, idx_micro)
+
+            elif i < len(idx_micro) and idx_micro[i][1] >= idx_micro[i+1][1]:
+                idx_micro[i][1] += idx_micro[i+1][1]
+                idx_micro.pop(i+1)
+                visited.pop(i+1)
+                print("다음 흡수")
+                visited[i] = True
+                find_last_micro(visited, idx_micro)
+
             else:
-                idx_micro[i][1] += idx_micro[i-1][1]
-                idx_micro.pop(i)  
-                 
+                print("pass")
+                visited[i] = True
+                pass
+        elif visited == [ True ] * len(idx_micro):
+            visited = [ False ] * len(idx_micro)
+            
 
-        # print('i=', i, idx_micro)
-
+        else:
+            pass
 
 
 N = int(input())
@@ -45,7 +56,7 @@ index = [i+1 for i in range(N)]
 
 idx_micro = [ [i+1, micro[i]] for i in range(N)]
 # print(idx_micro)
-
-find_last_micro(idx_micro)
+visited = [ False ] * len(idx_micro)
+find_last_micro(visited, idx_micro)
 print(idx_micro[0][1])
 print(idx_micro[0][0])
