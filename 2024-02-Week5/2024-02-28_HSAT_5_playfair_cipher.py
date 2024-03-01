@@ -6,29 +6,26 @@ import sys
 import copy
 input = sys.stdin.readline
 
-message = list(input().strip())
-modify_msg = copy.deepcopy(message)
+message = list(input().strip().upper())
+modify_msg = []
 cnt = 0
-
+# print(message)
 # 메시지 쌍 규칙
-for i in range(len(message)):
-    
-    if i % 2 != 0: #인덱스 홀수, 리스트 짝수번째
-        if message[i] == message[i-1]:
-            if message[i-1] != 'X' and (i+cnt) % 2 == 1:
-                modify_msg.insert(i+cnt,'X')
-                cnt += 1
-            elif message[i-1] == 'X' and (i+cnt) % 2 == 1:
-                modify_msg.insert(i+cnt,'Q')
-                cnt += 1
-            else:
-                continue
-            # print('\ni',i,modify_msg)
-    
-if len(modify_msg) % 2 == 1:
-    modify_msg.append('X')
-modify_msg = [modify_msg[i:i+2] for i in range(0, len(modify_msg), 2)]
-# print("\nmodify_msg", modify_msg, len(modify_msg))
+while len(message) != 0:
+    m1 = message.pop(0)
+    if len(message) == 0:
+        modify_msg.append([m1,'X'])
+        break
+    else:
+        m2 = message.pop(0)
+        if m1 == m2 and m1 != 'X':
+            modify_msg.append([m1,'X'])
+            message.insert(0,m2)
+        elif m1 == m2 and m1 == 'X':
+            modify_msg.append([m1,'Q'])
+            message.insert(0,m2)
+        else:
+            modify_msg.append([m1,m2])
 
 
 # key입력받기
@@ -57,18 +54,26 @@ for x,y in modify_msg: # 알파벳 쌍
             yj = key[i].index(y)
 
     if xi == yi: # 같은행이면
-        for j in [xj, yj]:
-            if j < 4:
-                answer.append(key[xi][j+1])            
-            elif j == 4:
-                answer.append(key[xi][0])
+        # for j in [xj, yj]:
+        #     if j < 4:
+        #         answer.append(key[xi][j+1])            
+        #     elif j == 4:
+        #         answer.append(key[xi][0])
+        xj = (xj + 1) % 5
+        yj = (yj + 1) % 5
+        answer.append(key[xi][xj])
+        answer.append(key[yi][yj])
 
     elif xj == yj: # 같은 열이면
-        for i in [xi, yi]:
-            if i < 4:
-                answer.append(key[i+1][xj])
-            elif i == 4:
-                answer.append(key[0][xj])
+        # for i in [xi, yi]:
+        #     if i < 4:
+        #         answer.append(key[i+1][xj])
+        #     elif i == 4:
+        #         answer.append(key[0][xj])
+        xi = (xi + 1) % 5
+        yi = (yi + 1) % 5
+        answer.append(key[xi][xj])
+        answer.append(key[yi][yj])
     else:
         answer.append(key[xi][yj])
         answer.append(key[yi][xj])
