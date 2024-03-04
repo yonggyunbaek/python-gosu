@@ -28,6 +28,36 @@ Output: [[1,2],[3,10],[12,16]]
 Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
 """
 
+# 풀이 1 /성공
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+
+        interval_stack = intervals.copy()
+        left, right = newInterval[0], newInterval[1]
+        ans = []
+        
+        while interval_stack:
+            new_left, new_right = interval_stack.pop(0)
+            
+            if new_right < newInterval[0]:
+                ans.append([new_left, new_right])
+                continue
+            
+            elif new_left > newInterval[1]:
+                ans.append([new_left, new_right])
+                continue
+            
+            else:
+                left = min(new_left, left)
+                right = max(new_right, right)
+                
+        ans.append([left,right])
+        ans.sort()
+        
+        return ans
+
+#풀이 2 /실패
+
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
 
@@ -68,3 +98,7 @@ class Solution:
             ans.append(val)
         
         return ans
+"""
+리스트 내의 크기 비교를 해서 값을 정하는 것은 min, max를 우선적으로 생각해보자....
+
+"""
