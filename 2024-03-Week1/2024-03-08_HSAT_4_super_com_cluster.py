@@ -9,21 +9,22 @@ input = sys.stdin.readline
 N, B = map(int, input().split())
 performance = list(map(int, input().split()))
 
-check_num = 1
-
-while True:
+def check(check_num):
     cost = 0
     for p in performance:
         if p < check_num:
             cost += (check_num - p) ** 2
-            
-    if cost < B:
-        check_num += 1
-        continue
-    elif cost == B:
-        print(check_num)
-        break
+    return cost
+   
+start = 1
+end = round( B**(1/2)) + 1
+
+while start <= end:
+    mid = (start + end) // 2
+    cost = sum( max(0, mid - p) ** 2 for p in performance )
+    if cost <= B:
+        start = mid + 1
     else:
-        print(check_num - 1)
-        break
-    
+        end = mid - 1
+
+print(end)
