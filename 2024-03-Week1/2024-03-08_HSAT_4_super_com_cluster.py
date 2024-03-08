@@ -17,14 +17,16 @@ def check(check_num):
     return cost
    
 start = 1
-end = round( B**(1/2)) + 1
+end = 2*10**9
 
-while start <= end:
-    mid = (start + end) // 2
-    cost = sum( max(0, mid - p) ** 2 for p in performance )
-    if cost <= B:
-        start = mid + 1
+def bsearch(start, end):
+    if start == end:
+        return start
+    mid = (start + end + 1) // 2
+    if check(mid) <= B:
+        return bsearch(mid, end)
     else:
-        end = mid - 1
+        return bsearch(start, mid - 1)
 
-print(end)
+answer = bsearch(start,end)
+print(answer)
