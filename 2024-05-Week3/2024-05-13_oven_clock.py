@@ -11,12 +11,6 @@ m = need % 60
 
 hour += h
 min += m
-
-if min >= 60:
-    hour += 1
-    min -= 60
-if hour >= 24:
-    hour -= 24
     
-print(hour, end = " ")
-print(min)
+print((hour + min // 60) % 24 , end = " ")
+print(min % 60)
