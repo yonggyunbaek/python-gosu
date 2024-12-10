@@ -17,4 +17,4 @@ for i in range(n):
         print(heapq.heappop(gift)*-1)
     else:
         for num in nums[1:]:
-            heapq.heappush(gift, -num)  # 음수로 넣어서 최소 힙을 사용
+            heapq.heappush(gift, -num) 
