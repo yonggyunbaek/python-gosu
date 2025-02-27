@@ -21,11 +21,15 @@ class Tree:
         self.nodes[nd1].children.append(self.nodes[nd2])
         self.nodes[nd2].children.append(self.nodes[nd1])
 
-    def _dfs(self, node, visited):
+    def _dfs(self, node, visited, parent):
         visited.add(node)
         for child in node.children:
             if child not in visited:
-                self._dfs(child, visited)
+                if not self._dfs(child, visited, node):
+                    return False
+            elif child != parent:
+                return False
+        return True
     
     def countTrees(self,n):
         visited = set()
@@ -33,8 +37,9 @@ class Tree:
 
         for node in self.nodes.values():
             if node not in visited:
-                treeCnt += 1
-                self._dfs(node, visited)
+                if self._dfs(node, visited, None):
+                    treeCnt += 1
+                
 
         for i in range(1, n+1):
             if i not in self.nodes:
